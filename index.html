@@ -447,7 +447,12 @@ html[data-theme="dark"] .page-shell .section.experience-section{background-image
  .page-shell .hero .hero-actions .button{display:flex;width:100%;min-width:0;min-height:44px;padding:10px 7px;font-size:10px;border-radius:13px!important}
  .page-shell .hero .hero-actions .button:nth-child(3){grid-column:1/-1}
 }
-</style></head>
+</style><style id="header-brand-feedback-fix">
+.page-shell .site-header .brand{border-radius:999px!important;-webkit-tap-highlight-color:transparent}
+.page-shell .site-header .brand:focus:not(:focus-visible){outline:none;box-shadow:none}
+.page-shell .site-header .brand:focus-visible{outline:none;border-radius:999px!important;box-shadow:0 0 0 3px rgba(79,98,232,.24)}
+</style>
+</head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="page-shell">
