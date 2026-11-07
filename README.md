@@ -1,11 +1,10 @@
 # Shubham Yadav — Portfolio snapshot
 
-This repository contains a snapshot of the production portfolio HTML, captured from the Vercel deployment listed below. It is a deployed-page snapshot (`index.html`), **not** the original editable source project or its build configuration.
+This repository contains a snapshot of the production portfolio HTML. It is a deployed-page snapshot (`index.html`), **not** the original editable source project or its build configuration.
 
 - Live portfolio: https://imshubhamy.vercel.app/
-- Vercel deployment: `dpl_E4KTeyGy3vqpdPXBzvb9CdQ1ahGW`
-- Deployment URL: https://shubham-yadav-portfolio-ff7vey3af-shubhamabhayjeetyadav-4983.vercel.app
-- Snapshot size: 94,992 bytes
-- Snapshot SHA-256: `1f09128a83972ce508429fc5dee6f422bd90e91157b98a9ef2d366c8ae445031`
+- Current production deployment: `dpl_AZsVXmRjsX9UoJCAfmcmQWLxmok2`
+- Deployment URL: https://shubham-yadav-portfolio-kebgkv8pi-shubhamabhayjeetyadav-4983.vercel.app
+- Snapshot size: 95,367 bytes
 
-The snapshot is provided for reference and backup. To make maintainable changes, the original source project and assets/build setup will still be needed.
+The header brand pill now suppresses the square mobile tap highlight and keeps keyboard focus feedback pill-shaped. The snapshot is provided for reference and backup. To make maintainable changes, the original source project and its assets/build setup will still be needed.
