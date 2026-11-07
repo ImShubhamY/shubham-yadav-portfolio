@@ -1,0 +1,105 @@
+tch { /* Private browsing may block storage. */ }
+    }
+  }
+  applyTheme(storedTheme || systemTheme);
+  themeButton.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
+
+  const menuButton = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuButton.addEventListener('click', () => {
+    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!isExpanded));
+    menuButton.setAttribute('aria-label', isExpanded ? 'Open menu' : 'Close menu');
+    mobileNav.hidden = isExpanded;
+  });
+  mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    mobileNav.hidden = true;
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open menu');
+  }));
+
+  const leetcodeUrl = window.PORTFOLIO_CONFIG?.leetcode?.trim();
+  if (leetcodeUrl && /^https:\/\/(www\.)?leetcode\.com\//i.test(leetcodeUrl)) {
+    document.querySelectorAll('.leetcode-link').forEach(link => {
+      link.href = leetcodeUrl;
+      link.hidden = false;
+    });
+  }
+
+  document.getElementById('copy-email').addEventListener('click', async event => {
+    const button = event.currentTarget;
+    const email = button.dataset.email;
+    try {
+      await navigator.clipboard.writeText(email);
+      button.innerHTML = 'Copied! <span>✓</span>';
+      window.setTimeout(() => { button.innerHTML = 'Copy email <span>⌘</span>'; }, 1800);
+    } catch {
+      window.location.href = `mailto:${email}`;
+    }
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const experienceValue = document.getElementById('experience-years');
+  if (experienceValue) {
+    const startYear = 2024, startMonth = 4;
+    const today = new Date();
+    const completedMonths = Math.max(0, (today.getFullYear() - startYear) * 12 + today.getMonth() - startMonth);
+    experienceValue.textContent = (completedMonths / 12).toFixed(1).replace(/\.0$/, '');
+  }
+})();
+
+</script>
+<script id="portfolio-polish-script">(() => {
+  const selector = ['.social-card','.profile-card','.hero-note','.metric-card','.education-strip','.experience-item','.project-card','.skill-group','.achievement-card','.contact-details a'].join(',');
+  const cards = document.querySelectorAll(selector);
+  cards.forEach((card) => {
+    card.classList.add('glass-card');
+    if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--glass-x', (event.clientX - rect.left) + 'px');
+        card.style.setProperty('--glass-y', (event.clientY - rect.top) + 'px');
+        card.classList.add('is-lit');
+      }, {passive:true});
+      card.addEventListener('pointerleave', () => card.classList.remove('is-lit'), {passive:true});
+    }
+    card.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      const rect = card.getBoundingClientRect();
+      const x = event.clientX - rect.left, y = event.clientY - rect.top;
+      card.style.setProperty('--glass-x', x + 'px');
+      card.style.setProperty('--glass-y', y + 'px');
+      card.classList.add('is-pressed');
+      const ripple = document.createElement('span');
+      ripple.className = 'glass-ripple';
+      ripple.setAttribute('aria-hidden','true');
+      ripple.style.left = x + 'px'; ripple.style.top = y + 'px';
+      card.appendChild(ripple);
+      window.setTimeout(() => ripple.remove(), 400);
+    }, {passive:true});
+    const release = () => card.classList.remove('is-pressed');
+    card.addEventListener('pointerup', release, {passive:true});
+    card.addEventListener('pointercancel', release, {passive:true});
+  });
+
+  // A short Android haptic tick when the viewport enters a different content section.
+  // iOS Safari does not expose the Web Vibration API, so it safely skips haptics there.
+  const sections = document.querySelectorAll('main section[id]');
+  if (!sections.length || !('IntersectionObserver' in window)) return;
+  const center = document.elementFromPoint(window.innerWidth/2, window.innerHeight/2)?.closest('section[id]');
+  let activeSection = center?.id || '';
+  let lastHapticAt = 0;
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio);
+    if (!visible.length) return;
+    const next = visible[0].target.id;
+    if (!next || next === activeSection) return;
+    activeSection = next;
+    const now = performance.now();
+    if (now - lastHapticAt < 550) return;
+    lastHapticAt = now;
+    if (typeof navigator.vibrate === 'function') navigator.vibrate(9);
+  }, {rootMargin:'-46% 0px -46% 0px',threshold:0});
+  sections.forEach(section => observer.observe(section));
+})();</script></body>
+</html>
