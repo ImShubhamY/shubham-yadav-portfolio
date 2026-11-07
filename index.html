@@ -487,6 +487,38 @@ html[data-theme="dark"] .page-shell .section.experience-section{background-image
   border-radius:999px!important;
 }
 </style>
+<style id="header-brand-ripple-v1">
+.page-shell .site-header .brand{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border-radius:999px!important;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition:transform .14s ease;
+}
+.page-shell .site-header .brand>*{position:relative;z-index:1}
+.page-shell .site-header .brand.brand-is-pressed{transform:scale(.985)}
+.page-shell .site-header .brand-pill-ripple{
+  position:absolute;
+  z-index:0;
+  width:132px;
+  height:132px;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%,-50%) scale(.08);
+  background:radial-gradient(circle,rgba(255,255,255,.62) 0%,rgba(105,133,239,.22) 38%,rgba(105,133,239,0) 74%);
+  animation:brand-pill-ripple .52s cubic-bezier(.15,.65,.3,1) forwards;
+}
+@keyframes brand-pill-ripple{
+  0%{opacity:.72;transform:translate(-50%,-50%) scale(.08)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}
+}
+@media(prefers-reduced-motion:reduce){
+  .page-shell .site-header .brand{transition:none}
+  .page-shell .site-header .brand-pill-ripple{animation-duration:.01ms}
+}
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -775,5 +807,50 @@ window.PORTFOLIO_CONFIG = {};
     if (typeof navigator.vibrate === 'function') navigator.vibrate(9);
   }, {rootMargin:'-46% 0px -46% 0px',threshold:0});
   sections.forEach(section => observer.observe(section));
-})();</script></body>
+})();</script><script id="header-brand-ripple-script-v1">
+(() => {
+  const brand = document.querySelector('.page-shell .site-header .brand[aria-label="Shubham Yadav home"]');
+  if (!brand) return;
+
+  const addRipple = (x, y) => {
+    const ripple = document.createElement('span');
+    ripple.className = 'brand-pill-ripple';
+    ripple.setAttribute('aria-hidden', 'true');
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    brand.appendChild(ripple);
+    window.setTimeout(() => ripple.remove(), 560);
+  };
+
+  brand.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    const rect = brand.getBoundingClientRect();
+    addRipple(event.clientX - rect.left, event.clientY - rect.top);
+    brand.classList.add('brand-is-pressed');
+  }, {passive:true});
+
+  const release = () => brand.classList.remove('brand-is-pressed');
+  brand.addEventListener('pointerup', release, {passive:true});
+  brand.addEventListener('pointercancel', release, {passive:true});
+  brand.addEventListener('lostpointercapture', release, {passive:true});
+
+  // On the homepage, the brand means "go to top". Avoid reloading the same page
+  // so the tap ripple has time to finish. On other paths, keep normal navigation.
+  brand.addEventListener('click', (event) => {
+    const target = new URL(brand.href, window.location.href);
+    const isHome = target.origin === window.location.origin &&
+      target.pathname === '/' && window.location.pathname === '/';
+    if (!isHome) return;
+    event.preventDefault();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // Keyboard activation gets the same visual feedback, centered within the pill.
+  brand.addEventListener('click', (event) => {
+    if (event.detail !== 0) return;
+    addRipple(brand.clientWidth / 2, brand.clientHeight / 2);
+  });
+})();
+</script>
+</body>
 </html>
