@@ -452,6 +452,41 @@ html[data-theme="dark"] .page-shell .section.experience-section{background-image
 .page-shell .site-header .brand:focus:not(:focus-visible){outline:none;box-shadow:none}
 .page-shell .site-header .brand:focus-visible{outline:none;border-radius:999px!important;box-shadow:0 0 0 3px rgba(79,98,232,.24)}
 </style>
+<style id="mobile-nav-touch-feedback-v1">
+.page-shell .mobile-nav a:not(.mobile-resume-download){
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border-radius:999px!important;
+  -webkit-tap-highlight-color:transparent;
+  outline:none;
+  touch-action:manipulation;
+  transition:color .16s ease,background .16s ease,border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+.page-shell .mobile-nav a:not(.mobile-resume-download).glass-card{
+  background-color:var(--surface-soft);
+  border-color:var(--line);
+}
+.page-shell .mobile-nav a:not(.mobile-resume-download).glass-card.is-pressed{
+  border-radius:999px!important;
+  background-color:var(--surface);
+  border-color:rgba(100,128,235,.38);
+  box-shadow:0 5px 16px rgba(35,48,76,.09),inset 0 1px 0 rgba(255,255,255,.86);
+  transform:scale(.985);
+}
+.page-shell .mobile-nav a:not(.mobile-resume-download):focus:not(:focus-visible){
+  outline:none;
+  box-shadow:none;
+}
+.page-shell .mobile-nav a:not(.mobile-resume-download):focus-visible{
+  outline:none;
+  border-radius:999px!important;
+  box-shadow:0 0 0 3px rgba(79,98,232,.24);
+}
+.page-shell .mobile-nav a:not(.mobile-resume-download):active{
+  border-radius:999px!important;
+}
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -689,7 +724,7 @@ window.PORTFOLIO_CONFIG = {};
 
 </script>
 <script id="portfolio-polish-script">(() => {
-  const selector = ['.social-card','.profile-card','.hero-note','.metric-card','.education-strip','.experience-item','.project-card','.skill-group','.achievement-card','.contact-details a'].join(',');
+  const selector = ['.social-card','.profile-card','.hero-note','.metric-card','.education-strip','.experience-item','.project-card','.skill-group','.achievement-card','.contact-details a','.mobile-nav a:not(.mobile-resume-download)'].join(',');
   const cards = document.querySelectorAll(selector);
   cards.forEach((card) => {
     card.classList.add('glass-card');
